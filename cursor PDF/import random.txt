@@ -1,0 +1,36 @@
+import random
+
+class SnakeGame:
+    def __init__(self, width=20, height=20):
+        self.width = width
+        self.height = height
+        self.reset()
+
+    def reset(self):
+        self.snake = [(self.width // 2, self.height // 2)]
+        self.direction = (0, -1)  # Start moving up
+        self.spawn_food()
+        self.score = 0
+        self.game_over = False
+
+    def spawn_food(self):
+        while True:
+            self.food = (random.randint(0, self.width - 1), random.randint(0, self.height - 1))
+            if self.food not in self.snake:
+                break
+
+    def change_direction(self, new_direction):
+        # Prevent the snake from reversing
+        opposite = (-self.direction[0], -self.direction[1])
+        if new_direction != opposite:
+            self.direction = new_direction
+
+    def step(self):
+        if self.game_over:
+            return
+
+        head_x, head_y = self.snake[0]
+        dx, dy = self.direction
+        new_head = (head_x + dx, head_y + dy)
+
+        # Check collisions
